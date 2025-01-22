@@ -595,6 +595,7 @@ func match(metadata *C.Metadata) (C.Proxy, C.Rule, error) {
 	defer configMux.RUnlock()
 	var (
 		resolved             bool
+		ipsResolved          bool
 		attemptProcessLookup = metadata.Type != C.INNER
 	)
 
@@ -619,7 +620,8 @@ func match(metadata *C.Metadata) (C.Proxy, C.Rule, error) {
 			}()
 		}
 
-		if metadata.SniffHost != "" && !metadata.SniffDstIP.IsValid() && rule.ShouldResolveIP() {
+		// Only resolve sniffed host when we don't have metadata.Host (client bypassed clash DNS)
+		if !ipsResolved && metadata.SniffHost != "" && metadata.Host == "" && !metadata.SniffDstIP.IsValid() && rule.ShouldResolveIP() {
 			func() {
 				ctx, cancel := context.WithTimeout(context.Background(), resolver.DefaultDNSTimeout)
 				defer cancel()
@@ -630,6 +632,7 @@ func match(metadata *C.Metadata) (C.Proxy, C.Rule, error) {
 					log.Debugln("[DNS] SNIFFED %s --> %s", metadata.SniffHost, ip.String())
 					metadata.SniffDstIP = ip
 				}
+				ipsResolved = true
 			}()
 		}
 
