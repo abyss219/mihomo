@@ -625,9 +625,9 @@ func match(metadata *C.Metadata) (C.Proxy, C.Rule, error) {
 				defer cancel()
 				ip, err := resolver.ResolveIP(ctx, metadata.SniffHost)
 				if err != nil {
-					log.Debugln("[DNS] resolve sniffed host %s error: %s", metadata.SniffHost, err.Error())
+					log.Debugln("[DNS] resolve SNIFFED host %s error: %s", metadata.SniffHost, err.Error())
 				} else {
-					log.Debugln("[DNS] sniffed %s --> %s", metadata.SniffHost, ip.String())
+					log.Debugln("[DNS] SNIFFED %s --> %s", metadata.SniffHost, ip.String())
 					metadata.SniffDstIP = ip
 				}
 			}()
