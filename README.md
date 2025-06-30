@@ -29,6 +29,8 @@
 - Remote providers, allowing users to get node lists remotely instead of hard-coding in config
 - Netfilter TCP redirecting. Deploy Mihomo on your Internet gateway with `iptables`.
 - Comprehensive HTTP RESTful API controller
+- **When Clash sniffs a packet and extracts the SNI, in addition to using the SNI for domain rule matching, it will also perform a DNS query on the SNI to obtain the corresponding IP address. The IP address obtained from this DNS query will then be used to further match Clash’s IP rules.**
+
 
 ## Dashboard
 
