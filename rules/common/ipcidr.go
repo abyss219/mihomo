@@ -41,10 +41,14 @@ func (i *IPCIDR) Match(metadata *C.Metadata, helper C.RuleMatchHelper) (bool, st
 	}
 
 	ip := metadata.DstIP
+
+	ips := metadata.SniffDstIP
+	var ipsValid bool = ips.IsValid() && i.ipnet.Contains(ips.WithZone(""))
+
 	if i.isSourceIP {
 		ip = metadata.SrcIP
 	}
-	return ip.IsValid() && i.ipnet.Contains(ip.WithZone("")), i.adapter
+	return ip.IsValid() && i.ipnet.Contains(ip.WithZone("")) || ipsValid, i.adapter
 }
 
 func (i *IPCIDR) Adapter() string {

@@ -361,6 +361,18 @@ func resolveMetadata(metadata *C.Metadata) (proxy C.Proxy, rule C.Rule, err erro
 					metadata.DstIP = ip
 				}
 				resolved = true
+			} else if metadata.SniffHost != "" && !metadata.SniffDstIP.IsValid() {
+				// Only resolve sniffed host when we did not resolve original domain
+				ctx, cancel := context.WithTimeout(context.Background(), resolver.DefaultDNSTimeout)
+				defer cancel()
+				ip, err := resolver.ResolveIP(ctx, metadata.SniffHost)
+				if err != nil {
+					log.Debugln("[DNS] resolve SNIFFED host %s error: %s", metadata.SniffHost, err.Error())
+				} else {
+					log.Debugln("[DNS] SNIFFED %s --> %s", metadata.SniffHost, ip.String())
+					metadata.SniffDstIP = ip
+				}
+				resolved = true
 			}
 		},
 		FindProcess: func() {
