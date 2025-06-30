@@ -3,11 +3,11 @@ package outbound
 import (
 	"context"
 
-	CN "github.com/metacubex/mihomo/common/net"
-	"github.com/metacubex/mihomo/component/dialer"
-	"github.com/metacubex/mihomo/component/proxydialer"
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/log"
+	CN "github.com/abyss219/mihomo/common/net"
+	"github.com/abyss219/mihomo/component/dialer"
+	"github.com/abyss219/mihomo/component/proxydialer"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/log"
 
 	mux "github.com/metacubex/sing-mux"
 	E "github.com/metacubex/sing/common/exceptions"

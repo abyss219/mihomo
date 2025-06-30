@@ -1,8 +1,8 @@
 package inbound
 
 import (
-	"github.com/metacubex/mihomo/common/utils"
-	LC "github.com/metacubex/mihomo/listener/config"
+	"github.com/abyss219/mihomo/common/utils"
+	LC "github.com/abyss219/mihomo/listener/config"
 )
 
 type ShadowTLS struct {

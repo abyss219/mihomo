@@ -3,10 +3,10 @@ package inbound
 import (
 	"strings"
 
-	C "github.com/metacubex/mihomo/constant"
-	LC "github.com/metacubex/mihomo/listener/config"
-	"github.com/metacubex/mihomo/listener/sing_vless"
-	"github.com/metacubex/mihomo/log"
+	C "github.com/abyss219/mihomo/constant"
+	LC "github.com/abyss219/mihomo/listener/config"
+	"github.com/abyss219/mihomo/listener/sing_vless"
+	"github.com/abyss219/mihomo/log"
 )
 
 type VlessOption struct {

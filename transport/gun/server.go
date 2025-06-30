@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/metacubex/mihomo/common/buf"
-	N "github.com/metacubex/mihomo/common/net"
-	C "github.com/metacubex/mihomo/constant"
+	"github.com/abyss219/mihomo/common/buf"
+	N "github.com/abyss219/mihomo/common/net"
+	C "github.com/abyss219/mihomo/constant"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"

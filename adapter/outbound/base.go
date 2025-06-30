@@ -9,12 +9,12 @@ import (
 	"sync"
 	"syscall"
 
-	N "github.com/metacubex/mihomo/common/net"
-	"github.com/metacubex/mihomo/common/utils"
-	"github.com/metacubex/mihomo/component/dialer"
-	"github.com/metacubex/mihomo/component/resolver"
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/log"
+	N "github.com/abyss219/mihomo/common/net"
+	"github.com/abyss219/mihomo/common/utils"
+	"github.com/abyss219/mihomo/component/dialer"
+	"github.com/abyss219/mihomo/component/resolver"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/log"
 )
 
 type ProxyAdapter interface {

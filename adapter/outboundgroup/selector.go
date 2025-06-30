@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/constant/provider"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/constant/provider"
 )
 
 type Selector struct {

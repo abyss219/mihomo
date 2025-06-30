@@ -6,9 +6,9 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/metacubex/mihomo/component/ca"
-	"github.com/metacubex/mihomo/component/ech"
-	"github.com/metacubex/mihomo/transport/vmess"
+	"github.com/abyss219/mihomo/component/ca"
+	"github.com/abyss219/mihomo/component/ech"
+	"github.com/abyss219/mihomo/transport/vmess"
 	smux "github.com/metacubex/smux"
 )
 

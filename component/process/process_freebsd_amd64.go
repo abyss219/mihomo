@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/metacubex/mihomo/log"
+	"github.com/abyss219/mihomo/log"
 )
 
 // store process name for when dealing with multiple PROCESS-NAME rules

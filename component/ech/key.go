@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/metacubex/mihomo/component/ca"
-	tlsC "github.com/metacubex/mihomo/component/tls"
+	"github.com/abyss219/mihomo/component/ca"
+	tlsC "github.com/abyss219/mihomo/component/tls"
 
 	"golang.org/x/crypto/cryptobyte"
 )

@@ -6,11 +6,11 @@ import (
 	"errors"
 	"time"
 
-	"github.com/metacubex/mihomo/common/callback"
-	N "github.com/metacubex/mihomo/common/net"
-	"github.com/metacubex/mihomo/common/utils"
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/constant/provider"
+	"github.com/abyss219/mihomo/common/callback"
+	N "github.com/abyss219/mihomo/common/net"
+	"github.com/abyss219/mihomo/common/utils"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/constant/provider"
 )
 
 type Fallback struct {

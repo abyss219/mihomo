@@ -3,10 +3,10 @@ package inbound
 import (
 	"strings"
 
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/listener/anytls"
-	LC "github.com/metacubex/mihomo/listener/config"
-	"github.com/metacubex/mihomo/log"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/listener/anytls"
+	LC "github.com/abyss219/mihomo/listener/config"
+	"github.com/abyss219/mihomo/log"
 )
 
 type AnyTLSOption struct {

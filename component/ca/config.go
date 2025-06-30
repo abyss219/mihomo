@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"sync"
 
-	C "github.com/metacubex/mihomo/constant"
+	C "github.com/abyss219/mihomo/constant"
 )
 
 var globalCertPool *x509.CertPool

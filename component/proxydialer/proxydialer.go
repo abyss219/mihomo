@@ -7,11 +7,11 @@ import (
 	"net/netip"
 	"strings"
 
-	N "github.com/metacubex/mihomo/common/net"
-	"github.com/metacubex/mihomo/component/dialer"
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/tunnel"
-	"github.com/metacubex/mihomo/tunnel/statistic"
+	N "github.com/abyss219/mihomo/common/net"
+	"github.com/abyss219/mihomo/component/dialer"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/tunnel"
+	"github.com/abyss219/mihomo/tunnel/statistic"
 )
 
 type proxyDialer struct {

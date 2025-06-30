@@ -5,12 +5,12 @@ import (
 	"net"
 	"time"
 
-	tlsC "github.com/metacubex/mihomo/component/tls"
-	"github.com/metacubex/mihomo/transport/hysteria/conns/faketcp"
-	"github.com/metacubex/mihomo/transport/hysteria/conns/udp"
-	"github.com/metacubex/mihomo/transport/hysteria/conns/wechat"
-	obfsPkg "github.com/metacubex/mihomo/transport/hysteria/obfs"
-	"github.com/metacubex/mihomo/transport/hysteria/utils"
+	tlsC "github.com/abyss219/mihomo/component/tls"
+	"github.com/abyss219/mihomo/transport/hysteria/conns/faketcp"
+	"github.com/abyss219/mihomo/transport/hysteria/conns/udp"
+	"github.com/abyss219/mihomo/transport/hysteria/conns/wechat"
+	obfsPkg "github.com/abyss219/mihomo/transport/hysteria/obfs"
+	"github.com/abyss219/mihomo/transport/hysteria/utils"
 
 	"github.com/metacubex/quic-go"
 )

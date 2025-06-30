@@ -11,13 +11,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/metacubex/mihomo/common/atomic"
-	"github.com/metacubex/mihomo/common/buf"
-	"github.com/metacubex/mihomo/common/pool"
-	"github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/log"
-	"github.com/metacubex/mihomo/transport/anytls/padding"
-	"github.com/metacubex/mihomo/transport/anytls/util"
+	"github.com/abyss219/mihomo/common/atomic"
+	"github.com/abyss219/mihomo/common/buf"
+	"github.com/abyss219/mihomo/common/pool"
+	"github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/log"
+	"github.com/abyss219/mihomo/transport/anytls/padding"
+	"github.com/abyss219/mihomo/transport/anytls/util"
 )
 
 type Session struct {

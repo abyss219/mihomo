@@ -7,8 +7,8 @@ import (
 	"runtime/debug"
 	"time"
 
-	N "github.com/metacubex/mihomo/common/net"
-	"github.com/metacubex/mihomo/log"
+	N "github.com/abyss219/mihomo/common/net"
+	"github.com/abyss219/mihomo/log"
 
 	"golang.org/x/net/http2"
 )

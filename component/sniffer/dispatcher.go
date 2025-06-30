@@ -8,11 +8,11 @@ import (
 
 	"github.com/metacubex/sing/common/metadata"
 
-	"github.com/metacubex/mihomo/common/lru"
-	N "github.com/metacubex/mihomo/common/net"
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/constant/sniffer"
-	"github.com/metacubex/mihomo/log"
+	"github.com/abyss219/mihomo/common/lru"
+	N "github.com/abyss219/mihomo/common/net"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/constant/sniffer"
+	"github.com/abyss219/mihomo/log"
 )
 
 var (

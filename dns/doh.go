@@ -15,10 +15,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/metacubex/mihomo/component/ca"
-	tlsC "github.com/metacubex/mihomo/component/tls"
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/log"
+	"github.com/abyss219/mihomo/component/ca"
+	tlsC "github.com/abyss219/mihomo/component/tls"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/log"
 
 	"github.com/metacubex/quic-go"
 	"github.com/metacubex/quic-go/http3"

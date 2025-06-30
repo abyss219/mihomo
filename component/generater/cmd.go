@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 
-	"github.com/metacubex/mihomo/component/ech"
+	"github.com/abyss219/mihomo/component/ech"
 
 	"github.com/gofrs/uuid/v5"
 )
