@@ -49,12 +49,17 @@ type TunOption struct {
 	ExcludePackage         []string       `inbound:"exclude-package,omitempty"`
 	EndpointIndependentNat bool           `inbound:"endpoint-independent-nat,omitempty"`
 	UDPTimeout             int64          `inbound:"udp-timeout,omitempty"`
+	DisableICMPForwarding  bool           `inbound:"disable-icmp-forwarding,omitempty"`
 	FileDescriptor         int            `inbound:"file-descriptor,omitempty"`
 
 	Inet4RouteAddress        []netip.Prefix `inbound:"inet4-route-address,omitempty"`
 	Inet6RouteAddress        []netip.Prefix `inbound:"inet6-route-address,omitempty"`
 	Inet4RouteExcludeAddress []netip.Prefix `inbound:"inet4-route-exclude-address,omitempty"`
 	Inet6RouteExcludeAddress []netip.Prefix `inbound:"inet6-route-exclude-address,omitempty"`
+
+	// darwin special config
+	RecvMsgX bool `inbound:"recvmsgx,omitempty"`
+	SendMsgX bool `inbound:"sendmsgx,omitempty"`
 }
 
 var _ encoding.TextUnmarshaler = (*netip.Addr)(nil)   // ensure netip.Addr can decode direct by structure package
@@ -118,12 +123,16 @@ func NewTun(options *TunOption) (*Tun, error) {
 			ExcludePackage:         options.ExcludePackage,
 			EndpointIndependentNat: options.EndpointIndependentNat,
 			UDPTimeout:             options.UDPTimeout,
+			DisableICMPForwarding:  options.DisableICMPForwarding,
 			FileDescriptor:         options.FileDescriptor,
 
 			Inet4RouteAddress:        options.Inet4RouteAddress,
 			Inet6RouteAddress:        options.Inet6RouteAddress,
 			Inet4RouteExcludeAddress: options.Inet4RouteExcludeAddress,
 			Inet6RouteExcludeAddress: options.Inet6RouteExcludeAddress,
+
+			RecvMsgX: options.RecvMsgX,
+			SendMsgX: options.SendMsgX,
 		},
 	}, nil
 }

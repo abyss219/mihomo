@@ -208,6 +208,9 @@ func ConvertsV2Ray(buf []byte) ([]map[string]any, error) {
 			if err != nil {
 				continue
 			}
+			if decodedHost, err := tryDecodeBase64([]byte(urlVLess.Host)); err == nil {
+				urlVLess.Host = string(decodedHost)
+			}
 			query := urlVLess.Query()
 			vless := make(map[string]any, 20)
 			err = handleVShareLink(names, urlVLess, scheme, vless)
@@ -217,6 +220,9 @@ func ConvertsV2Ray(buf []byte) ([]map[string]any, error) {
 			}
 			if flow := query.Get("flow"); flow != "" {
 				vless["flow"] = strings.ToLower(flow)
+			}
+			if encryption := query.Get("encryption"); encryption != "" {
+				vless["encryption"] = encryption
 			}
 			proxies = append(proxies, vless)
 

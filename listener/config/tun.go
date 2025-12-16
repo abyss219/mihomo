@@ -48,12 +48,17 @@ type Tun struct {
 	ExcludePackage         []string       `yaml:"exclude-package" json:"exclude-package,omitempty"`
 	EndpointIndependentNat bool           `yaml:"endpoint-independent-nat" json:"endpoint-independent-nat,omitempty"`
 	UDPTimeout             int64          `yaml:"udp-timeout" json:"udp-timeout,omitempty"`
+	DisableICMPForwarding  bool           `yaml:"disable-icmp-forwarding" json:"disable-icmp-forwarding,omitempty"`
 	FileDescriptor         int            `yaml:"file-descriptor" json:"file-descriptor"`
 
 	Inet4RouteAddress        []netip.Prefix `yaml:"inet4-route-address" json:"inet4-route-address,omitempty"`
 	Inet6RouteAddress        []netip.Prefix `yaml:"inet6-route-address" json:"inet6-route-address,omitempty"`
 	Inet4RouteExcludeAddress []netip.Prefix `yaml:"inet4-route-exclude-address" json:"inet4-route-exclude-address,omitempty"`
 	Inet6RouteExcludeAddress []netip.Prefix `yaml:"inet6-route-exclude-address" json:"inet6-route-exclude-address,omitempty"`
+
+	// darwin special config
+	RecvMsgX bool `yaml:"recvmsgx" json:"recvmsgx,omitempty"`
+	SendMsgX bool `yaml:"sendmsgx" json:"sendmsgx,omitempty"`
 }
 
 func (t *Tun) Sort() {
@@ -182,6 +187,9 @@ func (t *Tun) Equal(other Tun) bool {
 	if t.UDPTimeout != other.UDPTimeout {
 		return false
 	}
+	if t.DisableICMPForwarding != other.DisableICMPForwarding {
+		return false
+	}
 	if t.FileDescriptor != other.FileDescriptor {
 		return false
 	}
@@ -196,6 +204,13 @@ func (t *Tun) Equal(other Tun) bool {
 		return false
 	}
 	if !slices.Equal(t.Inet6RouteExcludeAddress, other.Inet6RouteExcludeAddress) {
+		return false
+	}
+
+	if t.RecvMsgX != other.RecvMsgX {
+		return false
+	}
+	if t.SendMsgX != other.SendMsgX {
 		return false
 	}
 
