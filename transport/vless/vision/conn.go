@@ -9,9 +9,9 @@ import (
 	"net"
 	"unsafe"
 
-	"github.com/metacubex/mihomo/common/buf"
-	N "github.com/metacubex/mihomo/common/net"
-	"github.com/metacubex/mihomo/log"
+	"github.com/abyss219/mihomo/common/buf"
+	N "github.com/abyss219/mihomo/common/net"
+	"github.com/abyss219/mihomo/log"
 
 	"github.com/gofrs/uuid/v5"
 )

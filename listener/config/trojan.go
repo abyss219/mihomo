@@ -3,8 +3,8 @@ package config
 import (
 	"encoding/json"
 
-	"github.com/metacubex/mihomo/listener/reality"
-	"github.com/metacubex/mihomo/listener/sing"
+	"github.com/abyss219/mihomo/listener/reality"
+	"github.com/abyss219/mihomo/listener/sing"
 )
 
 type TrojanUser struct {

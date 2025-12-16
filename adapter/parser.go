@@ -3,9 +3,9 @@ package adapter
 import (
 	"fmt"
 
-	"github.com/metacubex/mihomo/adapter/outbound"
-	"github.com/metacubex/mihomo/common/structure"
-	C "github.com/metacubex/mihomo/constant"
+	"github.com/abyss219/mihomo/adapter/outbound"
+	"github.com/abyss219/mihomo/common/structure"
+	C "github.com/abyss219/mihomo/constant"
 )
 
 func ParseProxy(mapping map[string]any) (C.Proxy, error) {

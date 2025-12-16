@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	mihomoHttp "github.com/metacubex/mihomo/component/http"
+	mihomoHttp "github.com/abyss219/mihomo/component/http"
 )
 
 const defaultHttpTimeout = time.Second * 90

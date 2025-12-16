@@ -4,9 +4,9 @@ import (
 	"crypto/tls"
 	"net"
 
-	"github.com/metacubex/mihomo/common/once"
-	"github.com/metacubex/mihomo/common/utils"
-	"github.com/metacubex/mihomo/log"
+	"github.com/abyss219/mihomo/common/once"
+	"github.com/abyss219/mihomo/common/utils"
+	"github.com/abyss219/mihomo/log"
 
 	utls "github.com/metacubex/utls"
 	"github.com/mroth/weightedrand/v2"

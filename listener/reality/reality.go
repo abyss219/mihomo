@@ -10,11 +10,11 @@ import (
 	"runtime/debug"
 	"time"
 
-	N "github.com/metacubex/mihomo/common/net"
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/listener/inner"
-	"github.com/metacubex/mihomo/log"
-	"github.com/metacubex/mihomo/ntp"
+	N "github.com/abyss219/mihomo/common/net"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/listener/inner"
+	"github.com/abyss219/mihomo/log"
+	"github.com/abyss219/mihomo/ntp"
 
 	utls "github.com/metacubex/utls"
 )

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	N "github.com/metacubex/mihomo/common/net"
+	N "github.com/abyss219/mihomo/common/net"
 
 	"github.com/metacubex/randv2"
 	"golang.org/x/net/http2"

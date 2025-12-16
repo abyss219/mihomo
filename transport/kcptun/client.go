@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/metacubex/mihomo/log"
+	"github.com/abyss219/mihomo/log"
 
 	"github.com/metacubex/kcp-go"
 	"github.com/metacubex/randv2"

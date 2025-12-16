@@ -15,19 +15,19 @@ import (
 	"sync"
 	"time"
 
-	"github.com/metacubex/mihomo/component/ca"
-	mihomoHttp "github.com/metacubex/mihomo/component/http"
-	C "github.com/metacubex/mihomo/constant"
-	"github.com/metacubex/mihomo/constant/features"
-	"github.com/metacubex/mihomo/log"
+	"github.com/abyss219/mihomo/component/ca"
+	mihomoHttp "github.com/abyss219/mihomo/component/http"
+	C "github.com/abyss219/mihomo/constant"
+	"github.com/abyss219/mihomo/constant/features"
+	"github.com/abyss219/mihomo/log"
 )
 
 const (
-	baseReleaseURL    = "https://github.com/MetaCubeX/mihomo/releases/latest/download/"
-	versionReleaseURL = "https://github.com/MetaCubeX/mihomo/releases/latest/download/version.txt"
+	baseReleaseURL    = "https://github.com/abyss219/mihomo/releases/latest/download/"
+	versionReleaseURL = "https://github.com/abyss219/mihomo/releases/latest/download/version.txt"
 
-	baseAlphaURL    = "https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/"
-	versionAlphaURL = "https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/version.txt"
+	baseAlphaURL    = "https://github.com/abyss219/mihomo/releases/download/Prerelease-Alpha/"
+	versionAlphaURL = "https://github.com/abyss219/mihomo/releases/download/Prerelease-Alpha/version.txt"
 
 	// MaxPackageFileSize is a maximum package file length in bytes. The largest
 	// package whose size is limited by this constant currently has the size of

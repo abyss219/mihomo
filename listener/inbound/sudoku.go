@@ -7,10 +7,10 @@ import (
 
 	"github.com/saba-futai/sudoku/apis"
 
-	C "github.com/metacubex/mihomo/constant"
-	LC "github.com/metacubex/mihomo/listener/config"
-	sudokuListener "github.com/metacubex/mihomo/listener/sudoku"
-	"github.com/metacubex/mihomo/log"
+	C "github.com/abyss219/mihomo/constant"
+	LC "github.com/abyss219/mihomo/listener/config"
+	sudokuListener "github.com/abyss219/mihomo/listener/sudoku"
+	"github.com/abyss219/mihomo/log"
 )
 
 type SudokuOption struct {

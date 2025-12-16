@@ -7,10 +7,10 @@ import (
 	"github.com/saba-futai/sudoku/apis"
 	sudokuobfs "github.com/saba-futai/sudoku/pkg/obfs/sudoku"
 
-	"github.com/metacubex/mihomo/adapter/inbound"
-	C "github.com/metacubex/mihomo/constant"
-	LC "github.com/metacubex/mihomo/listener/config"
-	"github.com/metacubex/mihomo/transport/socks5"
+	"github.com/abyss219/mihomo/adapter/inbound"
+	C "github.com/abyss219/mihomo/constant"
+	LC "github.com/abyss219/mihomo/listener/config"
+	"github.com/abyss219/mihomo/transport/socks5"
 )
 
 type Listener struct {

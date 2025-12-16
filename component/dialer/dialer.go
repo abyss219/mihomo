@@ -12,8 +12,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/metacubex/mihomo/component/keepalive"
-	"github.com/metacubex/mihomo/component/resolver"
+	"github.com/abyss219/mihomo/component/keepalive"
+	"github.com/abyss219/mihomo/component/resolver"
 )
 
 const (

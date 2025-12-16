@@ -4,13 +4,13 @@ import (
 	"net"
 	"strings"
 
-	"github.com/metacubex/mihomo/adapter/inbound"
-	N "github.com/metacubex/mihomo/common/net"
-	C "github.com/metacubex/mihomo/constant"
-	LC "github.com/metacubex/mihomo/listener/config"
-	"github.com/metacubex/mihomo/listener/sing"
-	"github.com/metacubex/mihomo/transport/shadowsocks/core"
-	"github.com/metacubex/mihomo/transport/socks5"
+	"github.com/abyss219/mihomo/adapter/inbound"
+	N "github.com/abyss219/mihomo/common/net"
+	C "github.com/abyss219/mihomo/constant"
+	LC "github.com/abyss219/mihomo/listener/config"
+	"github.com/abyss219/mihomo/listener/sing"
+	"github.com/abyss219/mihomo/transport/shadowsocks/core"
+	"github.com/abyss219/mihomo/transport/socks5"
 )
 
 type Listener struct {

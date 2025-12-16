@@ -7,8 +7,8 @@ import (
 	"io"
 	"net"
 
-	"github.com/metacubex/mihomo/common/pool"
-	"github.com/metacubex/mihomo/ntp"
+	"github.com/abyss219/mihomo/common/pool"
+	"github.com/abyss219/mihomo/ntp"
 )
 
 const (

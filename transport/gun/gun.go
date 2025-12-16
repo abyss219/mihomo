@@ -18,11 +18,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/metacubex/mihomo/common/buf"
-	"github.com/metacubex/mihomo/common/pool"
-	"github.com/metacubex/mihomo/component/ech"
-	tlsC "github.com/metacubex/mihomo/component/tls"
-	C "github.com/metacubex/mihomo/constant"
+	"github.com/abyss219/mihomo/common/buf"
+	"github.com/abyss219/mihomo/common/pool"
+	"github.com/abyss219/mihomo/component/ech"
+	tlsC "github.com/abyss219/mihomo/component/tls"
+	C "github.com/abyss219/mihomo/constant"
 
 	"golang.org/x/net/http2"
 )

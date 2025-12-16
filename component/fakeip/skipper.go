@@ -1,7 +1,7 @@
 package fakeip
 
 import (
-	C "github.com/metacubex/mihomo/constant"
+	C "github.com/abyss219/mihomo/constant"
 )
 
 type Skipper struct {
