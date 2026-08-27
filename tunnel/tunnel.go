@@ -325,6 +325,7 @@ func resolveMetadata(metadata *C.Metadata) (proxy C.Proxy, rule C.Rule, err erro
 	}
 	var (
 		resolved             bool
+		sniffResolved        bool
 		attemptProcessLookup = metadata.Type != C.INNER
 	)
 
@@ -346,6 +347,24 @@ func resolveMetadata(metadata *C.Metadata) (proxy C.Proxy, rule C.Rule, err erro
 					metadata.DstIP = ip
 				}
 				resolved = true
+			}
+			if !sniffResolved && metadata.Host == "" && metadata.SniffHost != "" {
+				// the destination has no domain at all, resolve the sniffed
+				// domain so ip rules can also match its resolved address
+				ctx, cancel := context.WithTimeout(context.Background(), resolver.DefaultDNSTimeout)
+				defer cancel()
+				ip, err := resolver.ResolveIP(ctx, metadata.SniffHost)
+				if err != nil {
+					log.Debugln("[DNS] resolve sniffed host %s error: %s", metadata.SniffHost, err.Error())
+				} else {
+					log.Debugln("[DNS] sniffed %s --> %s", metadata.SniffHost, ip.String())
+					if ip.IsUnspecified() {
+						// an adblocking DNS sinkholed the sniffed domain,
+						// remember it so ip rules can reject the connection
+						metadata.SniffDstIP = ip
+					}
+				}
+				sniffResolved = true
 			}
 		},
 		FindProcess: func() {

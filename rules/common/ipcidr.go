@@ -43,6 +43,8 @@ func (i *IPCIDR) Match(metadata *C.Metadata, helper C.RuleMatchHelper) (bool, st
 	ip := metadata.DstIP
 	if i.isSourceIP {
 		ip = metadata.SrcIP
+	} else if metadata.SniffDstIP.IsValid() && i.ipnet.Contains(metadata.SniffDstIP.WithZone("")) {
+		return true, i.adapter
 	}
 	return ip.IsValid() && i.ipnet.Contains(ip.WithZone("")), i.adapter
 }
