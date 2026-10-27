@@ -3,6 +3,7 @@ package dns
 import (
 	"errors"
 	"net/netip"
+	"time"
 
 	"github.com/metacubex/mihomo/common/lru"
 	"github.com/metacubex/mihomo/component/fakeip"
@@ -110,7 +111,23 @@ func (h *ResolverEnhancer) FindHostByIP(ip netip.Addr) (string, bool) {
 	}
 
 	if mapping := h.mapping; mapping != nil {
-		if host, existed := h.mapping.Get(ip); existed {
+		if h.RedirHostEnabled() {
+			// In redir-host the map is only a hint for rule matching, and a
+			// stale hint steers rules the wrong way, so honor the answer's
+			// TTL: an expired entry is treated as missing and dropped. The
+			// cache itself never ages entries. Fake-ip keeps the upstream
+			// behavior of never expiring them.
+			host, expires, existed := mapping.GetWithExpire(ip)
+			if !existed {
+				return "", false
+			}
+			if expires.Unix() > 0 && expires.Before(time.Now()) {
+				mapping.Delete(ip)
+				return "", false
+			}
+			return host, true
+		}
+		if host, existed := mapping.Get(ip); existed {
 			return host, true
 		}
 	}
