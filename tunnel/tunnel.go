@@ -294,6 +294,9 @@ func preHandleMetadata(metadata *C.Metadata) error {
 		if exist {
 			metadata.Host = host
 			metadata.DNSMode = C.DNSMapping
+			// In redir-host the reverse map is a guess: one name per IP, last
+			// writer wins. Remember that so the dial never trusts it.
+			metadata.MappedHost = resolver.RedirHostEnabled()
 			if resolver.IsFakeIP(metadata.DstIP) {
 				// only clear dstIP if it is confirmed to be a fake IP
 				metadata.DstIP = netip.Addr{}

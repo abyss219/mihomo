@@ -218,6 +218,10 @@ type Metadata struct {
 	// Only domain rule
 	SniffHost  string     `json:"sniffHost"`
 	SniffDstIP netip.Addr `json:"sniffDestinationIP"`
+	// MappedHost is set when Host was guessed from the redir-host reverse map
+	// rather than supplied by the client or observed by the sniffer. Such a
+	// Host is a hint for rule matching only and is never used to dial.
+	MappedHost bool `json:"mappedHost,omitempty"`
 }
 
 func (m *Metadata) RemoteAddress() string {

@@ -176,6 +176,8 @@ func replaceDomain(metadata *C.Metadata, host string, overrideDest bool) {
 			metadata.Host, host)
 		metadata.Host = host
 		metadata.DstIP = netip.Addr{}
+		// Host is now the observed name, no longer a reverse-map guess.
+		metadata.MappedHost = false
 	}
 	metadata.DNSMode = C.DNSNormal
 }
