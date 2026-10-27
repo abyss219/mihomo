@@ -27,7 +27,14 @@ func (d *Direct) DialContext(ctx context.Context, metadata *C.Metadata) (C.Conn,
 	}
 	opts := d.DialOptions()
 	opts = append(opts, dialer.WithResolver(resolver.DirectHostResolver))
-	c, err := dialer.DialContext(ctx, "tcp", metadata.RemoteAddress(), opts...)
+	address := metadata.RemoteAddress()
+	if metadata.MappedHost && metadata.DstIP.IsValid() {
+		// Host was guessed from the redir-host reverse map. The client already
+		// resolved its destination through our DNS, so its IP is authoritative;
+		// dial that instead of resolving the guess again.
+		address = metadata.AddrPort().String()
+	}
+	c, err := dialer.DialContext(ctx, "tcp", address, opts...)
 	if err != nil {
 		return nil, err
 	}

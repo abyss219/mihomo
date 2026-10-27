@@ -282,8 +282,10 @@ func (m *Metadata) RuleHost() string {
 
 // Pure is used to solve unexpected behavior
 // when dialing proxy connection in DNSMapping mode.
+// A MappedHost connection is stripped too: the sniffer resets DNSMode to
+// DNSNormal, but Host is still the reverse-map guess and must not be dialed.
 func (m *Metadata) Pure() *Metadata {
-	if (m.DNSMode == DNSMapping || m.DNSMode == DNSHosts) && m.DstIP.IsValid() {
+	if (m.DNSMode == DNSMapping || m.DNSMode == DNSHosts || m.MappedHost) && m.DstIP.IsValid() {
 		copyM := *m
 		copyM.Host = ""
 		return &copyM

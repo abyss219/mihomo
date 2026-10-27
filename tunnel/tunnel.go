@@ -580,16 +580,7 @@ func handleTCPConn(connCtx C.ConnContext) {
 		return
 	}
 
-	dialMetadata := metadata
-	if len(metadata.Host) > 0 {
-		if node, ok := resolver.DefaultHosts.Search(metadata.Host, false); ok {
-			if dstIp, _ := node.RandIP(); !resolver.IsFakeIP(dstIp) {
-				dialMetadata.DstIP = dstIp
-				dialMetadata.DNSMode = C.DNSHosts
-				dialMetadata = dialMetadata.Pure()
-			}
-		}
-	}
+	dialMetadata := tcpDialMetadata(metadata)
 
 	var peekBytes []byte
 	var peekLen int
@@ -647,30 +638,69 @@ func handleTCPConn(connCtx C.ConnContext) {
 	handleSocket(conn, remoteConn)
 }
 
+// tcpDialMetadata decides what the outbound is told to connect to.
+//
+// A hosts entry for Host wins and is dialed by its address, as before. Beyond
+// that, when Host was guessed from the redir-host reverse map and the sniffer
+// observed a name, a proxy outbound is handed the observed name instead of the
+// guess; DIRECT ignores Host for such connections and dials the client's IP.
+// The marker path works on a copy, so the metadata used for logging and the
+// API keeps the guess, the sniffed name and the IP side by side.
+func tcpDialMetadata(metadata *C.Metadata) *C.Metadata {
+	dialMetadata := metadata
+	if len(metadata.Host) > 0 {
+		if node, ok := resolver.DefaultHosts.Search(metadata.Host, false); ok {
+			if dstIp, _ := node.RandIP(); !resolver.IsFakeIP(dstIp) {
+				dialMetadata.DstIP = dstIp
+				dialMetadata.DNSMode = C.DNSHosts
+				dialMetadata = dialMetadata.Pure()
+			}
+		}
+	}
+	if dialMetadata.MappedHost && dialMetadata.Host != "" && dialMetadata.SniffHost != "" && dialMetadata.SniffHost != dialMetadata.Host {
+		dialMetadata = dialMetadata.Clone()
+		dialMetadata.Host = dialMetadata.SniffHost
+	}
+	return dialMetadata
+}
+
+// logDestination renders the destination for logs. For a connection whose
+// Host was guessed from the reverse map it shows the IP that is dialed, with
+// the sniffed name and the guess beside it, instead of the guess alone.
+func logDestination(metadata *C.Metadata) string {
+	if !metadata.MappedHost || !metadata.DstIP.IsValid() {
+		return metadata.RemoteAddress()
+	}
+	if metadata.SniffHost != "" {
+		return fmt.Sprintf("%s (sniffed %s, mapped %s)", metadata.AddrPort().String(), metadata.SniffHost, metadata.Host)
+	}
+	return fmt.Sprintf("%s (mapped %s)", metadata.AddrPort().String(), metadata.Host)
+}
+
 func logMetadataErr(metadata *C.Metadata, rule C.Rule, proxy C.ProxyAdapter, err error) {
 	if rule == nil {
-		log.Warnln("[%s] dial %s %s --> %s error: %s", strings.ToUpper(metadata.NetWork.String()), proxy.Name(), metadata.SourceDetail(), metadata.RemoteAddress(), err.Error())
+		log.Warnln("[%s] dial %s %s --> %s error: %s", strings.ToUpper(metadata.NetWork.String()), proxy.Name(), metadata.SourceDetail(), logDestination(metadata), err.Error())
 	} else {
-		log.Warnln("[%s] dial %s (match %s/%s) %s --> %s error: %s", strings.ToUpper(metadata.NetWork.String()), proxy.Name(), rule.RuleType().String(), rule.Payload(), metadata.SourceDetail(), metadata.RemoteAddress(), err.Error())
+		log.Warnln("[%s] dial %s (match %s/%s) %s --> %s error: %s", strings.ToUpper(metadata.NetWork.String()), proxy.Name(), rule.RuleType().String(), rule.Payload(), metadata.SourceDetail(), logDestination(metadata), err.Error())
 	}
 }
 
 func logMetadata(metadata *C.Metadata, rule C.Rule, remoteConn C.Connection) {
 	switch {
 	case metadata.SpecialProxy != "":
-		log.Infoln("[%s] %s --> %s using %s", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), metadata.RemoteAddress(), remoteConn.Chains().String())
+		log.Infoln("[%s] %s --> %s using %s", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), logDestination(metadata), remoteConn.Chains().String())
 	case rule != nil:
 		if rule.Payload() != "" {
-			log.Infoln("[%s] %s --> %s match %s using %s", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), metadata.RemoteAddress(), fmt.Sprintf("%s(%s)", rule.RuleType().String(), rule.Payload()), remoteConn.Chains().String())
+			log.Infoln("[%s] %s --> %s match %s using %s", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), logDestination(metadata), fmt.Sprintf("%s(%s)", rule.RuleType().String(), rule.Payload()), remoteConn.Chains().String())
 		} else {
-			log.Infoln("[%s] %s --> %s match %s using %s", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), metadata.RemoteAddress(), rule.RuleType().String(), remoteConn.Chains().String())
+			log.Infoln("[%s] %s --> %s match %s using %s", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), logDestination(metadata), rule.RuleType().String(), remoteConn.Chains().String())
 		}
 	case mode == Global:
-		log.Infoln("[%s] %s --> %s using GLOBAL", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), metadata.RemoteAddress())
+		log.Infoln("[%s] %s --> %s using GLOBAL", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), logDestination(metadata))
 	case mode == Direct:
-		log.Infoln("[%s] %s --> %s using DIRECT", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), metadata.RemoteAddress())
+		log.Infoln("[%s] %s --> %s using DIRECT", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), logDestination(metadata))
 	default:
-		log.Infoln("[%s] %s --> %s doesn't match any rule using %s", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), metadata.RemoteAddress(), remoteConn.Chains().String())
+		log.Infoln("[%s] %s --> %s doesn't match any rule using %s", strings.ToUpper(metadata.NetWork.String()), metadata.SourceDetail(), logDestination(metadata), remoteConn.Chains().String())
 	}
 }
 
