@@ -114,15 +114,17 @@ func (h *ResolverEnhancer) FindHostByIP(ip netip.Addr) (string, bool) {
 		if h.RedirHostEnabled() {
 			// In redir-host the map is only a hint for rule matching, and a
 			// stale hint steers rules the wrong way, so honor the answer's
-			// TTL: an expired entry is treated as missing and dropped. The
-			// cache itself never ages entries. Fake-ip keeps the upstream
-			// behavior of never expiring them.
+			// TTL: an expired entry is treated as missing. It is left in
+			// place rather than deleted, because a delete here could race
+			// with a fresh answer for the same IP and drop that instead; the
+			// next answer overwrites it anyway and the cache is bounded.
+			// Entries stored without an expiry, such as hosts entries, never
+			// expire. Fake-ip keeps the upstream behavior of never expiring.
 			host, expires, existed := mapping.GetWithExpire(ip)
 			if !existed {
 				return "", false
 			}
 			if expires.Unix() > 0 && expires.Before(time.Now()) {
-				mapping.Delete(ip)
 				return "", false
 			}
 			return host, true

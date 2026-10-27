@@ -3,10 +3,12 @@ package outbound
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"net"
 	"net/netip"
 	"strconv"
 
+	"github.com/metacubex/mihomo/component/dialer"
 	"github.com/metacubex/mihomo/component/resolver"
 	C "github.com/metacubex/mihomo/constant"
 	"github.com/metacubex/mihomo/transport/socks5"
@@ -33,16 +35,28 @@ func serializesSocksAddr(metadata *C.Metadata) []byte {
 }
 
 func resolveIPWithResolver(ctx context.Context, host string, prefer C.DNSPrefer, r resolver.Resolver) (netip.Addr, error) {
+	var ip netip.Addr
+	var err error
 	switch prefer {
 	case C.IPv4Only:
-		return resolver.ResolveIPv4WithResolver(ctx, host, r)
+		ip, err = resolver.ResolveIPv4WithResolver(ctx, host, r)
 	case C.IPv6Only:
-		return resolver.ResolveIPv6WithResolver(ctx, host, r)
+		ip, err = resolver.ResolveIPv6WithResolver(ctx, host, r)
 	case C.IPv6Prefer:
-		return resolver.ResolveIPPrefer6WithResolver(ctx, host, r)
+		ip, err = resolver.ResolveIPPrefer6WithResolver(ctx, host, r)
 	default:
-		return resolver.ResolveIPWithResolver(ctx, host, r)
+		ip, err = resolver.ResolveIPWithResolver(ctx, host, r)
 	}
+	if err != nil {
+		return netip.Addr{}, err
+	}
+	if ip.Unmap().IsUnspecified() {
+		// A sinkholed answer. The callers go on to send packets or dial to
+		// this address, which would reach whatever listens locally, so refuse
+		// it here the same way the TCP dialer does.
+		return netip.Addr{}, fmt.Errorf("%w: %s", dialer.ErrUnspecifiedDestination, host)
+	}
+	return ip, nil
 }
 
 func resolveUDPAddr(ctx context.Context, network, address string, prefer C.DNSPrefer) (*net.UDPAddr, error) {

@@ -27,8 +27,13 @@ func TestFindHostByIPHonorsTTLOnlyInRedirHost(t *testing.T) {
 	if host, ok := redirHost.FindHostByIP(ip); ok {
 		t.Fatalf("an expired entry must be treated as missing in redir-host, got %q", host)
 	}
-	if _, _, ok := redirHost.mapping.GetWithExpire(ip); ok {
-		t.Fatal("an expired entry must be dropped from the map")
+	redirHost.mapping.SetWithExpire(ip, "fresh.example", fresh)
+	if host, ok := redirHost.FindHostByIP(ip); !ok || host != "fresh.example" {
+		t.Fatalf("a fresh answer must replace the expired entry, got %q %v", host, ok)
+	}
+	redirHost.mapping.Set(ip, "hosts.example")
+	if host, ok := redirHost.FindHostByIP(ip); !ok || host != "hosts.example" {
+		t.Fatalf("an entry stored without an expiry must never expire, got %q %v", host, ok)
 	}
 	if _, ok := redirHost.FindHostByIP(netip.MustParseAddr("203.0.113.9")); ok {
 		t.Fatal("an unknown IP must stay unknown")

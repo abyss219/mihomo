@@ -54,6 +54,9 @@ func withHosts(mapping *lru.LruCache[netip.Addr, string]) middleware {
 			}
 
 			msg := r.Copy()
+			// hosts entries are static configuration, so they go into the
+			// reverse map without an expiry: the 10 s TTL below is only
+			// what the client is told.
 			handleIPs := func() {
 				for _, ipAddr := range record.IPs {
 					if ipAddr.Is4() && q.Qtype == D.TypeA {
@@ -62,7 +65,7 @@ func withHosts(mapping *lru.LruCache[netip.Addr, string]) middleware {
 						rr.A = ipAddr.AsSlice()
 						msg.Answer = append(msg.Answer, rr)
 						if mapping != nil {
-							mapping.SetWithExpire(ipAddr, host, time.Now().Add(time.Second*10))
+							mapping.Set(ipAddr, host)
 						}
 					} else if ipAddr.Is6() && q.Qtype == D.TypeAAAA {
 						rr := &D.AAAA{}
@@ -70,7 +73,7 @@ func withHosts(mapping *lru.LruCache[netip.Addr, string]) middleware {
 						rr.AAAA = ipAddr.AsSlice()
 						msg.Answer = append(msg.Answer, rr)
 						if mapping != nil {
-							mapping.SetWithExpire(ipAddr, host, time.Now().Add(time.Second*10))
+							mapping.Set(ipAddr, host)
 						}
 					}
 				}
