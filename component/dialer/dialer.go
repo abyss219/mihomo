@@ -142,6 +142,13 @@ func dialContext(ctx context.Context, network string, destination netip.Addr, po
 	destination, port = resolver.LookupIP4P(destination, port)
 	address = net.JoinHostPort(destination.String(), port)
 
+	// Refuse an unspecified destination before any socket is created by the
+	// custom netDialer, TFO or net.Dialer paths below. The check runs after
+	// LookupIP4P because that conversion can itself produce 0.0.0.0.
+	if destination.Unmap().IsUnspecified() {
+		return nil, fmt.Errorf("%w: %s", ErrUnspecifiedDestination, address)
+	}
+
 	netDialer := opt.netDialer
 	switch netDialer.(type) {
 	case nil:
@@ -310,7 +317,7 @@ loop:
 	if fallback.error == nil && fallback.Conn != nil {
 		return fallback.Conn, nil
 	}
-	return nil, errors.Join(errs...)
+	return nil, joinDialErrors(errs)
 }
 
 func parallelDialContext(ctx context.Context, network string, ips []netip.Addr, port string, opt option) (net.Conn, error) {
@@ -350,7 +357,7 @@ func parallelDialContext(ctx context.Context, network string, ips []netip.Addr, 
 	}
 
 	if len(errs) > 0 {
-		return nil, errors.Join(errs...)
+		return nil, joinDialErrors(errs)
 	}
 	return nil, os.ErrDeadlineExceeded
 }
@@ -367,7 +374,27 @@ func serialDialContext(ctx context.Context, network string, ips []netip.Addr, po
 			errs = append(errs, err)
 		}
 	}
-	return nil, errors.Join(errs...)
+	return nil, joinDialErrors(errs)
+}
+
+// joinDialErrors joins the per-candidate errors of one dial attempt.
+//
+// A candidate refused with ErrUnspecifiedDestination is dropped whenever
+// another candidate failed differently, so a mixed candidate set never reports
+// the refusal and the tunnel keeps retrying for the usable candidates. A set in
+// which every candidate was refused reports only the refusal, which the tunnel
+// treats as final.
+func joinDialErrors(errs []error) error {
+	var kept []error
+	for _, err := range errs {
+		if !errors.Is(err, ErrUnspecifiedDestination) {
+			kept = append(kept, err)
+		}
+	}
+	if len(kept) == 0 {
+		return errors.Join(errs...)
+	}
+	return errors.Join(kept...)
 }
 
 type dialResult struct {

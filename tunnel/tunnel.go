@@ -15,6 +15,7 @@ import (
 	"github.com/metacubex/mihomo/common/atomic"
 	N "github.com/metacubex/mihomo/common/net"
 	"github.com/metacubex/mihomo/common/utils"
+	"github.com/metacubex/mihomo/component/dialer"
 	"github.com/metacubex/mihomo/component/loopback"
 	"github.com/metacubex/mihomo/component/nat"
 	"github.com/metacubex/mihomo/component/process"
@@ -750,6 +751,10 @@ func shouldStopRetry(err error) bool {
 		return true
 	}
 	if errors.Is(err, loopback.ErrReject) {
+		return true
+	}
+	if errors.Is(err, dialer.ErrUnspecifiedDestination) {
+		// Every candidate address was 0.0.0.0 or ::; retrying cannot help.
 		return true
 	}
 	return false
