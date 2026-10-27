@@ -30,6 +30,15 @@
 - Netfilter TCP redirecting. Deploy Mihomo on your Internet gateway with `iptables`.
 - Comprehensive HTTP RESTful API controller
 
+## What changed in this fork
+
+- Mihomo never connects to the address 0.0.0.0. When a name resolves to that address the connection fails right away instead of reaching the web page of the router with the wrong certificate.
+- In redir-host mode the address the client connected to is the address Mihomo connects to. A name remembered from an earlier DNS answer is only used to match rules and is never resolved again. A proxy server is told the name read from the handshake when there is one, otherwise the remembered name.
+- In redir-host mode a remembered name expires together with its DNS answer instead of living until the next restart.
+- Ads stay blocked when an app skips your DNS. With sniffing on and parse-pure-ip on, Mihomo reads the website name from connections that arrive with only an IP address and no remembered name, and looks that name up with your DNS. When your ad blocker answers with 0.0.0.0, the reject rule for that address drops the connection. Domain rules match the sniffed name. Connections that already have a remembered name are not looked up again.
+- The connection list shows mappedHost when the name came from an earlier DNS answer rather than from the client.
+- The automated build no longer publishes Docker images or triggers the Android app build, and release notes link to this fork instead of the original project.
+
 ## Dashboard
 
 A web dashboard with first-class support for this project has been created; it can be checked out at [metacubexd](https://github.com/MetaCubeX/metacubexd).
