@@ -28,6 +28,14 @@ func (h *ResolverEnhancer) MappingEnabled() bool {
 	return h.mode == C.DNSFakeIP || h.mode == C.DNSMapping
 }
 
+// RedirHostEnabled reports whether enhanced-mode is redir-host. Unlike
+// MappingEnabled it is false in fake-ip mode, whose reverse map also holds
+// real addresses for domains excluded by fake-ip-filter, so it is the only
+// correct gate for behavior that must leave fake-ip untouched.
+func (h *ResolverEnhancer) RedirHostEnabled() bool {
+	return h.mode == C.DNSMapping
+}
+
 func (h *ResolverEnhancer) IsExistFakeIP(ip netip.Addr) bool {
 	if !h.FakeIPEnabled() {
 		return false

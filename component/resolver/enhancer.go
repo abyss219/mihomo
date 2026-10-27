@@ -7,6 +7,7 @@ var DefaultHostMapper Enhancer
 type Enhancer interface {
 	FakeIPEnabled() bool
 	MappingEnabled() bool
+	RedirHostEnabled() bool
 	IsFakeIP(netip.Addr) bool
 	IsFakeBroadcastIP(netip.Addr) bool
 	IsExistFakeIP(netip.Addr) bool
@@ -27,6 +28,14 @@ func FakeIPEnabled() bool {
 func MappingEnabled() bool {
 	if mapper := DefaultHostMapper; mapper != nil {
 		return mapper.MappingEnabled()
+	}
+
+	return false
+}
+
+func RedirHostEnabled() bool {
+	if mapper := DefaultHostMapper; mapper != nil {
+		return mapper.RedirHostEnabled()
 	}
 
 	return false
